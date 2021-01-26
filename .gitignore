@@ -1,13 +1,15 @@
-# --- CS 61B 核心规则 ---
+# --- CS 61B 核心白名单规则 ---
 *
 !*/
 !**.java
 !**.txt
 !**.json
+!**.csv
 !.fatweleminus
 !.gitignore
 !library-fa20
-!foods.csv
+!library-sp21
+!**/pom.xml
 
 # --- 通用忽略规则 ---
 *.class
@@ -27,6 +29,10 @@ replay_pid*
 
 # --- 操作系统与 IDE ---
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
 .idea/
 *.iml
 *.ipr
@@ -36,22 +42,20 @@ Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
-# --- 开发工具相关 ---
-[._]*.s[a-w][a-z]
-*.swp
-.project
-.classpath
-.settings/
-nbproject/
-
-# --- Python 相关 (针对你 Opt4ML 的研究背景) ---
+# --- Python 与研究环境 (针对 Opt4ML 背景) ---
 __pycache__/
 *.py[cod]
 *$py.class
+.Python
 env/
 venv/
-.Python
+.tox/
+.coverage
+.hypothesis/
+nosetests.xml
+pip-log.txt
 
-# --- CS 61B 项目特定忽略 ---
+# --- 课程后续项目特定忽略 ---
+# Project 3 & Project 1B
 # proj3/img
 # proj3/target
