@@ -7,9 +7,13 @@
 !**.csv
 !.fatweleminus
 !.gitignore
-!library-fa20
 !library-sp21
 !**/pom.xml
+
+# --- Capers Lab 特有规则 (SP21) ---
+!Makefile
+!lab6/testing/*
+!lab6/testing/our/*
 
 # --- 通用忽略规则 ---
 *.class
@@ -29,10 +33,6 @@ replay_pid*
 
 # --- 操作系统与 IDE ---
 .DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
 .idea/
 *.iml
 *.ipr
@@ -55,7 +55,6 @@ venv/
 nosetests.xml
 pip-log.txt
 
-# --- 课程后续项目特定忽略 ---
-# Project 3 & Project 1B
+# --- 课程后期项目特定忽略 ---
 # proj3/img
 # proj3/target
