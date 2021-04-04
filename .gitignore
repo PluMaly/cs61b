@@ -15,6 +15,14 @@
 !lab6/testing/*
 !lab6/testing/our/*
 
+# --- Project 3 资源文件 (SP21) ---
+!proj3/**/*.png
+!proj3/**/*.jpeg
+!proj3/**/*.jpg
+!proj3/**/*.mp3
+!proj3/**/*.mp4
+!proj3/**/*.gif
+
 # --- 通用忽略规则 ---
 *.class
 *.log
@@ -54,7 +62,3 @@ venv/
 .hypothesis/
 nosetests.xml
 pip-log.txt
-
-# --- 课程后期项目特定忽略 ---
-# proj3/img
-# proj3/target
