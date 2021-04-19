@@ -15,13 +15,19 @@
 !lab6/testing/*
 !lab6/testing/our/*
 
-# --- Project 3 资源文件 (SP21) ---
+# --- Project 3 / BYOW 资源文件 (SP21) ---
 !proj3/**/*.png
 !proj3/**/*.jpeg
 !proj3/**/*.jpg
 !proj3/**/*.mp3
 !proj3/**/*.mp4
 !proj3/**/*.gif
+!byow/**/*.png
+!byow/**/*.jpeg
+!byow/**/*.jpg
+!byow/**/*.mp3
+!byow/**/*.mp4
+!byow/**/*.gif
 
 # --- 通用忽略规则 ---
 *.class
