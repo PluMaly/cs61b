@@ -142,7 +142,7 @@ public class Model extends Observable {
         boolean empty = false;
         for (int col = 0; col < b.size(); col++) {
             for (int row = 0; row < b.size(); row++) {
-                if (b.tile(col,row) == row)
+                if (b.tile(col,row) == null)
                     empty = true;
             }
         }
