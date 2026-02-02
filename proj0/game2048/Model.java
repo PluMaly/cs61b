@@ -107,12 +107,62 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
+        boolean changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
+        // 1. 核心抽象：旋转坐标系。
+        // 无论按哪个键，我们都通过视角转换，统一看作是“向上滑动”。
+        board.setViewingPerspective(side);
+
+        // 2. 遍历每一列 (Column)
+        for (int c = 0; c < board.size(); c += 1) {
+
+            // 关键：为了满足“一个方块一轮只能合并一次”的约束，
+            // 我们用一个数组记录该列中哪些行已经发生过合并。
+            boolean[] mergedThisTurn = new boolean[board.size()];
+
+            // 3. 遍历行 (Row)，从上往下处理每一个方块。
+            // 注意：第 3 行（最顶行）不需要动，所以从第 2 行（size - 2）向下扫描。
+            for (int r = board.size() - 2; r >= 0; r -= 1) {
+                Tile t = board.tile(c, r);
+
+                if (t != null) {
+                    // 4. 寻找该方块能滑到的最远目标行 (targetRow)
+                    int targetRow = r;
+
+                    // 向上探测：寻找上方第一个不为空的位置
+                    for (int nextR = r + 1; nextR < board.size(); nextR += 1) {
+                        Tile nextT = board.tile(c, nextR);
+
+                        if (nextT == null) {
+                            // 如果上方是空的，暂时把这个位置定为目标
+                            targetRow = nextR;
+                        } else if (nextT.value() == t.value() && !mergedThisTurn[nextR]) {
+                            // 如果数值相等且上方方块还没合并过，这就是最终目标
+                            targetRow = nextR;
+                            mergedThisTurn[nextR] = true; // 标记已合并
+                            break; // 找到合并点，停止探测
+                        } else {
+                            // 遇到不相等的方块或已合并过的方块，停止探测
+                            break;
+                        }
+                    }
+
+                    // 5. 执行移动
+                    if (targetRow != r) {
+                        // board.move 会自动处理“单纯移动”或“合并动作”
+                        // 如果发生了合并，它会返回 true
+                        boolean isMerge = board.move(c, targetRow, t);
+                        if (isMerge) {
+                            score += board.tile(c, targetRow).value(); // 合并后更新分数
+                        }
+                        changed = true; // 只要有位移，状态就改变了
+                    }
+                }
+            }
+        }
+
+        // 6. 逻辑收敛：将视角重置回北方，这是后续 UI 渲染的基础。
+        board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
@@ -156,7 +206,17 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
-        return false;
+        boolean ifMaxExist = false;
+        for (int col = 0; col < b.size(); col++) {
+            for (int row = 0; row < b.size(); row++) {
+               if  (b.tile(col,row) != null) {
+                   if (b.tile(col,row ).value() == MAX_PIECE){
+                       ifMaxExist = true;
+                   }
+               }
+            }
+        }
+        return ifMaxExist;
     }
 
     /**
@@ -166,8 +226,35 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        // 1. 首先检查是否有空位（如果你已经写好了这个辅助方法）
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+
+        int size = b.size();
+        // 2. 遍历每一个格子，检查相邻合并的可能性
+        for (int c = 0; c < size; c++) {
+            for (int r = 0; r < size; r++) {
+                Tile current = b.tile(c, r);
+
+                // 检查右侧邻居 (c + 1)
+                if (c + 1 < size) {
+                    Tile right = b.tile(c + 1, r);
+                    if (current.value() == right.value()) {
+                        return true;
+                    }
+                }
+
+                // 检查下方邻居 (r + 1)
+                if (r + 1 < size) {
+                    Tile down = b.tile(c, r + 1);
+                    if (current.value() == down.value()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false; // 既没空位，也没能合并的，Game Over
     }
 
 
